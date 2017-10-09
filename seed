@@ -1,0 +1,16 @@
+#!/usr/bin/env python2
+
+from funge.languages import funge98opt
+from funge.program import Program
+from random import randint, seed
+from sys import argv
+
+prog_raw = open(argv[1]).read().split()
+prog_range, prog_seed = range(int(prog_raw[0])), int(prog_raw[1])
+seed(prog_seed)
+prog_code = ''.join(chr(randint(32, 127) % 127 or 10) for _ in prog_range)
+
+prog_class = Program(funge98opt.ConcurrentFilesystemBefunge98)
+prog_class.load_code(prog_code)
+prog_class.create_ip()
+prog_class.execute()
